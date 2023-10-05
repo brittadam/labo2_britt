@@ -14,11 +14,17 @@ export default class World {
       document.querySelector("#btnAddIsland").addEventListener("click", () => {
           this.addIsland();
     });
+      document.querySelector("#btnSave").addEventListener("click", () => {
+          this.save();
+        
+      });
   }
   
     save() {
       // save array islands to localstorage as string
       // loop over all this.islands and save the names
+      localStorage.setItem("islands", JSON.stringify(this.islands));
+      console.log(localStorage.getItem("islands"));
     }
   
     load() {
@@ -48,8 +54,7 @@ export default class World {
 
       document.body.appendChild(islandElement);
       this.moveIsland(islandElement);
-
-
+      this.islands.push(color, name);
        
     }
   
