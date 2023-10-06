@@ -18,6 +18,9 @@ export default class World {
           this.save();
         
       });
+      document.querySelector("#btnLoad").addEventListener("click", () => {
+          this.load();
+      });
   }
   
     save() {
@@ -26,12 +29,26 @@ export default class World {
       localStorage.setItem("islands", JSON.stringify(this.islands));
       console.log(localStorage.getItem("islands"));
     }
-  
+
     load() {
       // load islands from localstorage into array
       // loop over the array and addIslands()
+      let storedArrayString = localStorage.getItem("islands");
+      let storedislands = JSON.parse(storedArrayString);
+      // console.log(storedArray);
+      storedislands.forEach(storedisland => {
+        let div = document.createElement("div");
+        div.classList.add("island");
+        div.style.backgroundColor = storedisland.color;
+        div.innerHTML = storedisland.name; 
+        //append to body
+        document.body.appendChild(div);
+        this.moveIsland(div);        
+      });
+
+      
     }
-  
+    
     getCoordinates() {
       // return coordinates within the screen at random, feel free to change it up!
       let randomSign = Math.random() < 0.5 ? -1 : 1;
@@ -40,22 +57,22 @@ export default class World {
         y: ((Math.random() * window.innerHeight) / 2) * randomSign
       };
     }
-  
+
     addIsland() {
       // add the islands to the DOM
-     
       let name = island.getRandomName();
       let color = island.getRandomColor();
       let islandElement = document.createElement("div");
-
+    
       islandElement.classList.add("island");
       islandElement.style.backgroundColor = color;
       islandElement.innerHTML = name;
-
+    
       document.body.appendChild(islandElement);
       this.moveIsland(islandElement);
-      this.islands.push(color, name);
-       
+      
+      // Push the island as an object with color and name properties into this.islands
+      this.islands.push({ color, name });
     }
   
     moveIsland(islandElement) {
